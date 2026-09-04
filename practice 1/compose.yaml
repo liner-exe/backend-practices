@@ -7,8 +7,7 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - ./index.php:/var/www/html/index.php
-      - ./style.css:/var/www/html/style.css
+      - ./:/var/www/html
   db:
     image: mysql:8.4
     environment:
