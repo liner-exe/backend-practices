@@ -63,6 +63,7 @@ if ($cmd !== '') {
 
         .text-cmd {
             color: #4ade80;
+            white-space: pre;
         }
 
         .cursor {
