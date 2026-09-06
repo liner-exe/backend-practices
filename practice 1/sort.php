@@ -21,8 +21,11 @@ if (!isset($_GET['array']) || trim($_GET['array']) === '') {
 <head>
     <meta charset="UTF-8">
     <title>Сортировка вставками</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-<body style="margin: 0;">
+<body style="margin: 0; font-family: 'Montserrat', sans-serif"">
     <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100dvh; background: #2b2b2b">
         <?php if ($error): ?>
             <div style="background: #da4c4c; padding: 10px; color: #fff; border-radius: 8px;">
