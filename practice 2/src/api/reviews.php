@@ -90,7 +90,7 @@ function handlePost(PDO $db): void
         ]);
     } catch (PDOException $e) {
         if ($e->getCode() === '23000') {
-            sendResponse(409, "Пользователь с таким email уже существует");
+            sendResponse(409, "Пользователь с указанным user_id уже существует");
             return;
         }
 
