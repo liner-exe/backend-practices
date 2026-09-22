@@ -50,7 +50,7 @@ function handlePost(PDO $db): void
         $query = $db->prepare("INSERT INTO users (name, email) VALUES (?, ?)");
         $query->execute([$body['name'], $body['email']]);
 
-        sendResponse(200, "Пользователь создан", [
+        sendResponse(201, "Пользователь создан", [
             "id" => (int)$db->lastInsertId()
         ]);
 
@@ -111,7 +111,7 @@ function handleDelete(PDO $db, ?int $id): void
             return;
         }
 
-        sendResponse(204, "Пользователь удален");
+        sendResponse(200, "Пользователь удален");
     } else {
         sendResponse(400, "id обязателен для указания");
     }
