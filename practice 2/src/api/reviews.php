@@ -42,6 +42,14 @@ function handleGet(PDO $db, ?int $id): void
     }
 
     if ($userId !== null) {
+        $isExists = $db->prepare("SELECT 1 FROM users WHERE id = ?");
+        $isExists->execute([$userId]);
+
+        if ($isExists->rowCount() === 0) {
+            sendResponse(404, "Пользователь с данным id не найден");
+            return;
+        }
+
         $query = $db->prepare("
             SELECT r.id, r.user_id, u.name AS author_name, r.rating, r.comment
             FROM reviews r
@@ -50,6 +58,7 @@ function handleGet(PDO $db, ?int $id): void
         ");
         $query->execute([$userId]);
         sendResponse(200, "Отзывы пользователя", $query->fetchAll());
+        return;
     }
 
     $query = $db->query("
