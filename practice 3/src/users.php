@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 require_once "users_lib.php";
 
 $api_url = 'http://localhost/api/users.php';
@@ -15,7 +17,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'delet
                 ]
         ]);
 
-        @file_get_contents($api_url . '?id=' . $id, false, $context);
+        $res = @file_get_contents($api_url . '?id=' . $id, false, $context);
+        if ($res !== false) {
+            $_SESSION['flash'] = json_decode($res, true);
+        }
 
         header("Location: users.php");
         exit;
@@ -41,7 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'creat
                 ]
         ]);
 
-        @file_get_contents($api_url, false, $context);
+        $res = @file_get_contents($api_url, false, $context);
+        if ($res !== false) {
+            $_SESSION['flash'] = json_decode($res, true);
+        }
     }
 
     header("Location: users.php");
@@ -68,7 +76,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'updat
                 ]
         ]);
 
-        @file_get_contents($api_url . '?id=' . $id, false, $context);
+        $res = @file_get_contents($api_url . '?id=' . $id, false, $context);
+        if ($res !== false) {
+            $_SESSION['flash'] = json_decode($res, true);
+        }
     }
 
     header("Location: users.php");
@@ -82,8 +93,11 @@ if ($response !== false) {
     $apiData = json_decode($response, true) ?: [];
 }
 
-$code = $apiData['code'] ?? null;
-$message = $apiData['message'] ?? '';
+$flash = $_SESSION['flash'] ?? null;
+unset($_SESSION['flash']);
+
+$code = $flash['code'] ?? $apiData['code'] ?? null;
+$message = $flash['message'] ?? $apiData['message'] ?? '';
 $users = $apiData['data'] ?? [];
 
 $edit_id = isset($_GET['edit_id']) ? (int)($_GET['edit_id']) : null;
@@ -106,16 +120,14 @@ foreach ($users as $user) {
 
     <style>
         body {
+            background-color: #f8fafc;
             font-family: 'Montserrat', sans-serif;
-        }
-
-        .status {
-            background: aqua;
         }
 
         .container {
             max-width: 1200px;
             margin: auto;
+            padding-top: 30px;
         }
 
         table {
@@ -135,6 +147,36 @@ foreach ($users as $user) {
             border: 1px solid black;
         }
 
+        .card {
+            background: #ffffff;
+            box-shadow: 0 5px 3px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .status-banner {
+            background: #e8e8e8;
+            margin-bottom: 10px;
+            padding: 10px 14px;
+            border-radius: 4px;
+        }
+
+        .status-banner.success {
+            background-color: #92da8b;
+        }
+
+        .status-banner.error {
+            background-color: #e47d7d;
+        }
+
+        .status-badge {
+            font-weight: 700;
+            background: rgba(0, 0, 0, 0.06);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
         button.delete {
             width: 32px;
             height: 32px;
@@ -142,6 +184,17 @@ foreach ($users as $user) {
             color: #fff;
             border: none;
             cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button.edit {
+            width: 32px;
+            height: 32px;
+            background-color: #e3e3e3;
+            color: #474747;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
         }
 
         form.delete-form {
@@ -152,95 +205,146 @@ foreach ($users as $user) {
 
         form.edit-form {
             display: flex;
-            align-items: center;
+            flex-direction: row;
             margin: 0;
         }
 
-        .edit {
-            width: 32px;
-            height: 32px;
-            background-color: #bcbcbc;
-            color: #474747;
-            border: none;
-            cursor: pointer;
-            line-height: 2;
+        form.create-form {
+            display: flex;
+            flex-direction: column;
         }
+
+        .fields {
+            display: flex;
+            gap: 16px;
+        }
+
+        .fields input {
+            background-color: #e3e3e3;
+            border-radius: 4px;
+            border: 1px #aeaeae solid;
+            padding: 4px;
+        }
+
+        .fields input:focus {
+            outline: 1px #92da8b solid;
+        }
+
+        .create-form-buttons {
+            margin-top: 14px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .create-form-buttons button {
+            background-color: #e3e3e3;
+            border: none;
+            padding: 8px;
+            border-radius: 4px;
+        }
+
+
     </style>
+    <script>
+        function handleFormSubmit(e) {
+            const isCancel = e.submitter && e.submitter.classList.contains('cancel-button');
+
+            if (isCancel) {
+                return confirm('Отменить редактирование?');
+            }
+
+            const isEdit = <?= $edit_user ? 'true' : 'false' ?>;
+            return confirm(isEdit ? 'Сохранить изменения?' : 'Создать пользователя?');
+        }
+    </script>
 </head>
 <body>
     <div class="container">
-        <h1>Управление пользователями</h1>
+        <div class="card">
+            <h1>Управление пользователями</h1>
 
-        <?php if ($code !== null): ?>
-            <div class="status">
-                <p>Статус приложения:</p>
-                <?= codeToMessage($code) ?>
-                <?= $message ?>
-            </div>
-        <?php endif; ?>
+            <?php if ($code !== null): ?>
+                <?php $isError = ($code >= 400); ?>
+                <div class="status-banner <?= $isError ? 'error' : 'success' ?>">
+                    <span class="status-badge"><?= (int)$code ?> <?= htmlspecialchars(codeToMessage($code)) ?></span>
+                    <span><?= htmlspecialchars($message) ?></span>
+                </div>
+            <?php endif; ?>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>id</th>
-                    <th>имя</th>
-                    <th>email</th>
-                    <th>Управление</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($users as $u): ?>
+            <table>
+                <thead>
                     <tr>
-                        <td><?= htmlspecialchars($u['id']) ?></td>
-                        <td><?= htmlspecialchars($u['name']) ?></td>
-                        <td><?= htmlspecialchars($u['email']) ?></td>
-                        <td>
-                            <div style="display: flex; gap: 8px;">
-                                <form method="POST" action="users.php" onsubmit="return confirm('Удалить пользователя?')"
-                                    class="delete-form">
-                                    <input type="hidden" name="action" value="delete">
-                                    <input type="hidden" name="id" value="<?= htmlspecialchars((string)($u['id'] ?? '')) ?>" required>
-                                    <button type="submit" class="delete">X</button>
-                                </form>
-                                <form method="GET" action="users.php" class="edit-form">
-                                    <input type="hidden" name="edit_id" value="<?= htmlspecialchars((string)($u['id'] ?? '')) ?>">
-                                    <button type="submit" class="edit">✎</button>
-                                </form>
-                            </div>
-                        </td>
+                        <th>id</th>
+                        <th>имя</th>
+                        <th>email</th>
+                        <th>Управление</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php foreach ($users as $u): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($u['id']) ?></td>
+                            <td><?= htmlspecialchars($u['name']) ?></td>
+                            <td><?= htmlspecialchars($u['email']) ?></td>
+                            <td>
+                                <div style="display: flex; gap: 8px;">
+                                    <form method="POST" action="users.php" onsubmit="return confirm('Удалить пользователя?')"
+                                        class="delete-form">
+                                        <input type="hidden" name="action" value="delete">
+                                        <input type="hidden" name="id" value="<?= htmlspecialchars((string)($u['id'] ?? '')) ?>" required>
+                                        <button type="submit" class="delete">X</button>
+                                    </form>
+                                    <form method="GET" action="users.php" class="edit-form">
+                                        <input type="hidden" name="edit_id" value="<?= htmlspecialchars((string)($u['id'] ?? '')) ?>">
+                                        <button type="submit" class="edit">✎</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
 
-        <h2><?= $edit_user ? "Обновить пользователя" : "Создать пользователя" ?></h2>
+        <div class="card" style="margin-top: 12px;">
+            <h2><?= $edit_user ? "Обновить пользователя" : "Создать пользователя" ?></h2>
 
-        <form method="POST" action="users.php" onsubmit="return confirm('<?= $edit_user ? 'Сохранить изменения?' : 'Создать пользователя?' ?>')">
-            <div>
-                <label for="name">Имя</label>
-                <input type="text" name="name" id="name" value="<?= htmlspecialchars($edit_user['name'] ?? '') ?>">
-            </div>
-            <div>
-                <label for="email">Email</label>
-                <input type="email" name="email" id="email" value="<?= htmlspecialchars($edit_user['email'] ?? '') ?>">
-            </div>
+            <form class="create-form" method="POST" action="users.php" onsubmit="return handleFormSubmit(event)">
+                <div class="fields">
+                    <div>
+                        <label for="name">Имя</label>
+                        <input type="text" name="name" id="name" value="<?= htmlspecialchars($edit_user['name'] ?? '') ?>">
+                    </div>
+                    <div>
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email" value="<?= htmlspecialchars($edit_user['email'] ?? '') ?>">
+                    </div>
+                </div>
 
-            <input type="hidden" name="action" value="<?= $edit_user ? 'update' : 'create' ?>">
+                <input type="hidden" name="action" value="<?= $edit_user ? 'update' : 'create' ?>">
 
-            <?php if ($edit_user): ?>
-                <input type="hidden" name="id" value="<?= htmlspecialchars((string)$edit_user['id']) ?>">
-            <?php endif; ?>
+                <?php if ($edit_user): ?>
+                    <input type="hidden" name="id" value="<?= htmlspecialchars((string)$edit_user['id']) ?>">
+                <?php endif; ?>
 
-            <button type="submit">
-                <?= $edit_user ? 'Сохранить' : 'Создать' ?>
-            </button>
+                <div class="create-form-buttons">
+                    <button type="submit">
+                        <?= $edit_user ? 'Сохранить' : 'Создать' ?>
+                    </button>
 
-            <?php if ($edit_user): ?>
-                <button type="submit" formmethod="GET" formaction="users.php" class="cancel-button">
-                    Отмена
-                </button>
-            <?php endif; ?>
-        </form>
+                    <?php if ($edit_user): ?>
+                        <button type="submit"
+                                formmethod="GET"
+                                formaction="users.php"
+                                class="cancel-button"
+                                formnovalidate
+                        >
+                            Отмена
+                        </button>
+                    <?php endif; ?>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 </html>
