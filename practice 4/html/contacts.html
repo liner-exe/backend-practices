@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакты и реквизиты — Маркетплейс</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8fafc;
+            font-family: 'Montserrat', sans-serif;
+            color: #1e293b;
+            margin: 0;
+            padding: 30px 15px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .card {
+            background: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 18px;
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: #334155;
+        }
+
+        p {
+            line-height: 1.6;
+            margin: 0 0 12px 0;
+            font-size: 14px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            background-color: #f1f5f9;
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .info-item .label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+
+        .info-item .value {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        table.requisites {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        table.requisites td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        table.requisites td:first-child {
+            font-weight: 600;
+            color: #64748b;
+            width: 35%;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #0284c7;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-links">
+            <a href="delivery.html">Доставка</a>
+            <a href="contacts.html">Контакты и реквизиты</a>
+            <a href="users.php" target="_blank">Управление пользователями</a>
+            <a href="reviews.php" target="_blank">Управление отзывами</a>
+        </div>
+
+        <div class="card">
+            <h1>Контакты службы поддержки</h1>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="label">Горячая линия (бесплатно по РФ)</div>
+                    <div class="value">8 (800) 555-35-35</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">Электронная почта</div>
+                    <div class="value">support@marketplace.local</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">Режим работы поддержки</div>
+                    <div class="value">Круглосуточно, 24/7</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">Центральный офис</div>
+                    <div class="value">г. Москва, ул. Примерная, д. 10</div>
+                </div>
+            </div>
+
+            <h2>Юридические реквизиты</h2>
+            <table class="requisites">
+                <tbody>
+                    <tr>
+                        <td>Полное наименование:</td>
+                        <td>ООО «Маркетплейс Онлайн»</td>
+                    </tr>
+                    <tr>
+                        <td>ОГРН:</td>
+                        <td>1234567890123</td>
+                    </tr>
+                    <tr>
+                        <td>ИНН / КПП:</td>
+                        <td>7701234567 / 770101001</td>
+                    </tr>
+                    <tr>
+                        <td>Банк:</td>
+                        <td>ПАО «Сбербанк»</td>
+                    </tr>
+                    <tr>
+                        <td>Расчетный счет:</td>
+                        <td>40702810900000001234</td>
+                    </tr>
+                    <tr>
+                        <td>Корреспондентский счет:</td>
+                        <td>30101810400000000225</td>
+                    </tr>
+                    <tr>
+                        <td>БИК:</td>
+                        <td>044525225</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
