@@ -1,0 +1,439 @@
+:root {
+    --page: #f1f4f8;
+    --surface: #fff;
+    --text: #182436;
+    --muted: #526177;
+    --border: #d6deea;
+    --control-border: #818fa5;
+    --shade: #f3f6fa;
+    --selection: #e7effe;
+    --link: #174b9d;
+    --primary: #184eac;
+    --primary-hover: #123d89;
+    --success: #1d6c45;
+    --danger: #a3313e;
+    --danger-bg: #fae9ec;
+}
+
+.theme-dark {
+    color-scheme: dark;
+    --page: #121923;
+    --surface: #1c2634;
+    --text: #edf2fa;
+    --muted: #b4c0d2;
+    --border: #3b4a5e;
+    --control-border: #73829b;
+    --shade: #243142;
+    --selection: #283e60;
+    --link: #aecbff;
+    --primary: #2755a5;
+    --primary-hover: #3266bf;
+    --success: #a3dfba;
+    --danger: #ffb5bf;
+    --danger-bg: #442b39;
+}
+
+.theme-colorblind {
+    --page: #f9f7f0;
+    --surface: #fff;
+    --text: #171412;
+    --muted: #514739;
+    --border: #81735c;
+    --control-border: #574936;
+    --shade: #fff5db;
+    --selection: #e7effd;
+    --link: #004488;
+    --primary: #004488;
+    --primary-hover: #003364;
+    --success: #004488;
+    --danger: #734200;
+    --danger-bg: #ffe9bf;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 28px 20px 48px;
+    background: var(--page);
+    color: var(--text);
+    font: 16px/1.55 system-ui, sans-serif;
+}
+
+.container {
+    max-width: 1060px;
+    margin: 0 auto;
+}
+
+.card,
+.pref-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.card {
+    padding: 24px;
+}
+
+.card + .card {
+    margin-top: 16px;
+}
+
+h1, h2 {
+    margin: 0 0 14px;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+}
+
+h1 {
+    font-size: clamp(23px, 3.5vw, 30px);
+}
+
+h2 {
+    font-size: 20px;
+}
+
+p,
+.info-page ul {
+    margin: 0 0 14px;
+}
+
+.card > :last-child {
+    margin-bottom: 0;
+}
+
+a {
+    color: var(--link);
+    text-underline-offset: 3px;
+}
+
+.pref-bar {
+    margin-bottom: 20px;
+}
+
+.pref-links,
+.pref-form,
+.fields,
+.row-actions,
+.create-form-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.pref-links {
+    padding: 10px 14px;
+}
+
+.pref-links a {
+    padding: 7px 10px;
+    border-radius: 5px;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.pref-links a:hover {
+    background: var(--shade);
+    text-decoration: underline;
+}
+
+a[aria-current="page"] {
+    background: var(--selection);
+    color: var(--link);
+    text-decoration: underline;
+}
+
+.pref-form {
+    padding: 12px 14px;
+    border-top: 1px solid var(--border);
+    background: var(--shade);
+    border-radius: 0 0 9px 9px;
+    font-size: 14px;
+}
+
+.pref-form span {
+    margin-right: auto;
+    overflow-wrap: anywhere;
+}
+
+.pref-form input[type="text"] {
+    width: 135px;
+}
+
+button, input, select {
+    max-width: 100%;
+    font: inherit;
+}
+
+button,
+input:not([type="radio"], [type="file"], [type="hidden"]),
+select {
+    min-height: 38px;
+    padding: 6px 10px;
+    border: 1px solid var(--control-border);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--text);
+}
+
+input::placeholder {
+    color: var(--muted);
+}
+
+button {
+    cursor: pointer;
+    font-weight: 600;
+}
+
+button:hover {
+    background: var(--shade);
+}
+
+:focus-visible {
+    outline: 2px solid var(--link);
+    outline-offset: 2px;
+}
+
+.pref-form button,
+.upload-form button,
+.create-form-buttons button:first-child {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
+.pref-form button:hover,
+.upload-form button:hover,
+.create-form-buttons button:first-child:hover {
+    background: var(--primary-hover);
+    border-color: var(--primary-hover);
+}
+
+.upload-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 10px;
+    max-width: 660px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--shade);
+}
+
+.upload-form label {
+    grid-column: 1 / -1;
+    font-weight: 600;
+}
+
+.upload-form input[type="file"] {
+    width: 100%;
+    min-width: 0;
+    min-height: 38px;
+    padding: 4px;
+    border: 1px solid var(--control-border);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--text);
+    font-size: 14px;
+}
+
+.upload-form input::file-selector-button {
+    margin-right: 8px;
+    padding: 5px 8px;
+    border: 0;
+    border-radius: 4px;
+    background: var(--shade);
+    color: var(--text);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 600;
+}
+
+.upload-form input::file-selector-button:hover {
+    background: var(--selection);
+}
+
+.empty-state {
+    padding: 24px 12px;
+    background: var(--shade);
+    border: 1px dashed var(--control-border);
+    border-radius: 8px;
+    color: var(--muted);
+    text-align: center;
+}
+
+.row-actions {
+    flex-wrap: nowrap;
+}
+
+.row-actions button {
+    min-width: 34px;
+    min-height: 34px;
+    padding: 4px 6px;
+}
+
+.row-actions .delete {
+    color: var(--danger);
+}
+
+.row-actions .delete:hover {
+    background: var(--danger-bg);
+}
+
+.fields {
+    align-items: flex-start;
+    gap: 12px 16px;
+}
+
+.review-fields {
+    flex-direction: column;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 100%;
+}
+
+.field label,
+.field span {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.create-form-buttons {
+    margin-top: 16px;
+}
+
+input[type="radio"] {
+    accent-color: var(--link);
+}
+
+.table-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.table-scroll table {
+    min-width: 500px;
+}
+
+th, td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+
+th,
+.table-scroll tbody tr:hover {
+    background: var(--shade);
+}
+
+tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.status-banner,
+.alert {
+    margin-bottom: 14px;
+    padding: 9px 12px;
+    border-left: 3px solid currentColor;
+    border-radius: 4px;
+    background: var(--shade);
+    font-size: 14px;
+}
+
+.status-badge {
+    font-weight: 700;
+}
+
+.success, .alert-ok {
+    color: var(--success);
+}
+
+.error, .alert-err {
+    background: var(--danger-bg);
+    color: var(--danger);
+}
+
+.info-page p,
+.info-page ul {
+    max-width: 76ch;
+}
+
+.info-page li + li {
+    margin-top: 4px;
+}
+
+.info-item .label,
+.requisites td:first-child {
+    color: var(--muted);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.info-item {
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--shade);
+    overflow-wrap: anywhere;
+}
+
+.info-item .label {
+    font-size: 14px;
+}
+
+.info-item .value {
+    font-weight: 600;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 12px 12px 28px;
+    }
+
+    .card {
+        padding: 16px;
+    }
+
+    .pref-links {
+        padding: 8px;
+        gap: 2px;
+    }
+
+    .pref-form span {
+        flex-basis: 100%;
+    }
+
+    .upload-form,
+    .info-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .upload-form button {
+        justify-self: start;
+    }
+}

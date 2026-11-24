@@ -25,7 +25,7 @@ class DBSessionHandler implements SessionHandlerInterface
     public function gc(int $max_lifetime): int|false
     {
         $stmt = $this->pdo->prepare(
-            'DELETE FROM sessions WHERE last_accessed < DATE_SUM(NOW(), INTERVAL :lifetime SECOND)'
+            'DELETE FROM sessions WHERE last_accessed < DATE_SUB(NOW(), INTERVAL :lifetime SECOND)'
         );
         $stmt->execute(['lifetime' => $max_lifetime]);
         return $stmt->rowCount();

@@ -52,6 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['pdf_file'])) {
             }
         }
     }
+
+    header("Location: documents.php");
 }
 
 $files = $pdo->query('SELECT * FROM pdf_files ORDER BY id DESC')->fetchAll();
@@ -60,24 +62,11 @@ $files = $pdo->query('SELECT * FROM pdf_files ORDER BY id DESC')->fetchAll();
 <html lang="<?= htmlspecialchars($currentLang) ?>">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($t['docs_title']) ?></title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { background-color: #f8fafc; font-family: 'Montserrat', sans-serif; color: #1e293b; margin: 0; padding: 30px 15px; }
-        .container { max-width: 960px; margin: auto; }
-        .card { background: #ffffff; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); padding: 24px; border-radius: 10px; margin-bottom: 20px; }
-        h1 { font-size: 22px; margin-top: 0; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
-        th, td { padding: 10px 12px; border-bottom: 1px solid #e2e8f0; text-align: left; }
-        th { background-color: #f1f5f9; font-weight: 600; }
-        .alert { padding: 12px 16px; border-radius: 6px; margin-bottom: 16px; font-size: 14px; font-weight: 600; }
-        .alert-ok { background: #dcfce7; color: #166534; }
-        .alert-err { background: #fee2e2; color: #991b1b; }
-        .btn-primary { background: #0284c7; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-family: inherit; font-weight: 600; }
-    </style>
-    <?= renderThemeStyles() ?>
+    <link rel="stylesheet" href="/style.css">
 </head>
-<body>
+<body class="<?= themeClass($prefs['theme']) ?>">
 <div class="container">
     <?= renderHeaderBar() ?>
 
@@ -90,43 +79,45 @@ $files = $pdo->query('SELECT * FROM pdf_files ORDER BY id DESC')->fetchAll();
             </div>
         <?php endif; ?>
 
-        <form method="POST" enctype="multipart/form-data" style="display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
-            <label style="font-size:14px; font-weight:600;"><?= htmlspecialchars($t['upload_label']) ?></label>
-            <input type="file" name="pdf_file" accept="application/pdf" required>
-            <button type="submit" class="btn-primary"><?= htmlspecialchars($t['upload_btn']) ?></button>
+        <form method="POST" enctype="multipart/form-data" class="upload-form">
+            <label for="pdf-file"><?= htmlspecialchars($t['upload_label']) ?></label>
+            <input id="pdf-file" type="file" name="pdf_file" accept="application/pdf" required>
+            <button type="submit"><?= htmlspecialchars($t['upload_btn']) ?></button>
         </form>
     </div>
 
     <div class="card">
         <?php if (empty($files)): ?>
-            <p><?= htmlspecialchars($t['no_files']) ?></p>
+            <p class="empty-state"><?= htmlspecialchars($t['no_files']) ?></p>
         <?php else: ?>
-            <table>
-                <thead>
-                <tr>
-                    <th><?= htmlspecialchars($t['table_id']) ?></th>
-                    <th><?= htmlspecialchars($t['table_name']) ?></th>
-                    <th><?= htmlspecialchars($t['table_author']) ?></th>
-                    <th><?= htmlspecialchars($t['table_date']) ?></th>
-                    <th><?= htmlspecialchars($t['table_action']) ?></th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php foreach ($files as $f): ?>
+            <div class="table-scroll">
+                <table>
+                    <thead>
                     <tr>
-                        <td><?= (int)$f['id'] ?></td>
-                        <td><?= htmlspecialchars($f['original_name']) ?></td>
-                        <td><?= htmlspecialchars($f['uploaded_by']) ?></td>
-                        <td><?= htmlspecialchars($f['uploaded_at']) ?></td>
-                        <td>
-                            <a href="/download_pdf.php?id=<?= (int)$f['id'] ?>" target="_blank">
-                                <?= htmlspecialchars($t['download_btn']) ?>
-                            </a>
-                        </td>
+                        <th><?= htmlspecialchars($t['table_id']) ?></th>
+                        <th><?= htmlspecialchars($t['table_name']) ?></th>
+                        <th><?= htmlspecialchars($t['table_author']) ?></th>
+                        <th><?= htmlspecialchars($t['table_date']) ?></th>
+                        <th><?= htmlspecialchars($t['table_action']) ?></th>
                     </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($files as $f): ?>
+                        <tr>
+                            <td><?= (int)$f['id'] ?></td>
+                            <td><?= htmlspecialchars($f['original_name']) ?></td>
+                            <td><?= htmlspecialchars($f['uploaded_by']) ?></td>
+                            <td><?= htmlspecialchars($f['uploaded_at']) ?></td>
+                            <td>
+                                <a href="/download_pdf.php?id=<?= (int)$f['id'] ?>" target="_blank">
+                                    <?= htmlspecialchars($t['download_btn']) ?>
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         <?php endif; ?>
     </div>
 </div>
