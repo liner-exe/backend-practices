@@ -36,50 +36,68 @@ function getUserPreferences(): array
 
     $i18n = [
         'ru' => [
-            'nav_users'      => 'Пользователи',
-            'nav_reviews'    => 'Отзывы',
-            'nav_docs'       => 'PDF-Документы',
-            'nav_delivery'   => 'Доставка',
-            'nav_contacts'   => 'Контакты',
-            'greeting'       => $login !== '' ? "Привет, {$login}!" : 'Вы вошли как Гость',
-            'login_ph'       => 'Ваш логин',
-            'theme_light'    => 'Светлая тема',
-            'theme_dark'     => 'Тёмная тема',
-            'theme_cb'       => 'Для цветовой слепоты',
-            'save_btn'       => 'Применить',
-            'docs_title'     => 'Хранилище PDF-документов',
-            'upload_label'   => 'Выберите PDF-файл для загрузки на сервер:',
-            'upload_btn'     => 'Загрузить PDF',
-            'table_id'       => 'ID',
-            'table_name'     => 'Имя файла',
-            'table_author'   => 'Загрузил',
-            'table_date'     => 'Дата загрузки',
-            'table_action'   => 'Действие',
-            'download_btn'   => 'Открыть / Скачать PDF',
-            'no_files'       => 'Загруженных PDF-документов пока нет.',
-            'users_management' => 'Управление пользователями',
-            'users_table_name' => 'Имя',
-            'users_table_management' => 'Управление',
-            'users_create' => 'Создать пользователя',
-            'users_update' => 'Обновить пользователя',
-            'users_create_btn' => 'Создать',
-            'users_save_btn' => 'Сохранить',
-            'users_cancel_btn' => 'Отмена',
-            'reviews_management' => 'Управление отзывами',
-            'reviews_table_user_id' => 'ID пользователя',
-            'reviews_table_name' => 'Имя',
-            'reviews_table_rating' => 'Оценка',
-            'reviews_table_review' => 'Отзыв',
-            'reviews_table_management' => 'Управление',
-            'reviews_create' => 'Создать отзыв',
-            'reviews_update' => 'Обновить отзыв',
-            'reviews_form_user_id' => 'ID пользователя',
-            'reviews_form_review_id' => 'ID отзыва',
-            'reviews_form_rating' => 'Оценка',
-            'reviews_form_text' => 'Текст отзыва',
-            'reviews_create_btn' => 'Создать',
-            'reviews_save_btn' => 'Сохранить',
-            'reviews_cancel_btn' => 'Отмена',
+            'nav' => [
+                'users' => 'Пользователи',
+                'reviews' => 'Отзывы',
+                'documents' => 'PDF-Документы',
+                'delivery' => 'Доставка',
+                'contacts' => 'Контакты',
+            ],
+            'settings' => [
+                'greeting' => $login !== '' ? "Привет, {$login}!" : 'Вы вошли как Гость',
+                'login_placeholder' => 'Ваш логин',
+                'theme_light' => 'Светлая тема',
+                'theme_dark' => 'Тёмная тема',
+                'theme_colorblind' => 'Для цветовой слепоты',
+                'apply' => 'Применить',
+            ],
+            'dialogs' => [
+                'cancel_edit' => 'Отменить редактирование?',
+                'save_changes' => 'Сохранить изменения?',
+                'create_user' => 'Создать пользователя?',
+                'delete_user' => 'Удалить пользователя?',
+                'create_review' => 'Создать отзыв?',
+                'delete_review' => 'Удалить отзыв?',
+            ],
+            'documents' => [
+                'title' => 'Хранилище PDF-документов',
+                'upload_label' => 'Выберите PDF-файл для загрузки на сервер:',
+                'upload_button' => 'Загрузить PDF',
+                'table_id' => 'ID',
+                'table_name' => 'Имя файла',
+                'table_author' => 'Загрузил',
+                'table_date' => 'Дата загрузки',
+                'table_action' => 'Действие',
+                'download_button' => 'Открыть / Скачать PDF',
+                'no_files' => 'Загруженных PDF-документов пока нет.',
+            ],
+            'users' => [
+                'management' => 'Управление пользователями',
+                'table_name' => 'Имя',
+                'table_management' => 'Управление',
+                'create' => 'Создать пользователя',
+                'update' => 'Обновить пользователя',
+                'create_button' => 'Создать',
+                'save_button' => 'Сохранить',
+                'cancel_button' => 'Отмена',
+            ],
+            'reviews' => [
+                'management' => 'Управление отзывами',
+                'table_user_id' => 'ID пользователя',
+                'table_name' => 'Имя',
+                'table_rating' => 'Оценка',
+                'table_review' => 'Отзыв',
+                'table_management' => 'Управление',
+                'create' => 'Создать отзыв',
+                'update' => 'Обновить отзыв',
+                'form_user_id' => 'ID пользователя',
+                'form_review_id' => 'ID отзыва',
+                'form_rating' => 'Оценка',
+                'form_text' => 'Текст отзыва',
+                'create_button' => 'Создать',
+                'save_button' => 'Сохранить',
+                'cancel_button' => 'Отмена',
+            ],
             'delivery' => [
                 'title' => 'Доставка — Маркетплейс',
                 'heading' => 'Условия доставки маркетплейса',
@@ -120,50 +138,68 @@ function getUserPreferences(): array
             ],
         ],
         'en' => [
-            'nav_users'      => 'Users',
-            'nav_reviews'    => 'Reviews',
-            'nav_docs'       => 'PDF Documents',
-            'nav_delivery'   => 'Delivery',
-            'nav_contacts'   => 'Contacts',
-            'greeting'       => $login !== '' ? "Hello, {$login}!" : 'Logged in as Guest',
-            'login_ph'       => 'Your login',
-            'theme_light'    => 'Light theme',
-            'theme_dark'     => 'Dark theme',
-            'theme_cb'       => 'Colorblind mode',
-            'save_btn'       => 'Apply',
-            'docs_title'     => 'PDF Document Storage',
-            'upload_label'   => 'Select a PDF file to upload to the server:',
-            'upload_btn'     => 'Upload PDF',
-            'table_id'       => 'ID',
-            'table_name'     => 'File Name',
-            'table_author'   => 'Uploaded By',
-            'table_date'     => 'Upload Date',
-            'table_action'   => 'Action',
-            'download_btn'   => 'Open / Download PDF',
-            'no_files'       => 'No PDF documents uploaded yet.',
-            'users_management' => 'Users management',
-            'users_table_name' => 'Name',
-            'users_table_management' => 'Management',
-            'users_create' => 'Create user',
-            'users_update' => 'Update user',
-            'users_create_btn' => 'Create',
-            'users_save_btn' => 'Save',
-            'users_cancel_btn' => 'Cancel',
-            'reviews_management' => 'Reviews management',
-            'reviews_table_user_id' => 'User ID',
-            'reviews_table_name' => 'Name',
-            'reviews_table_rating' => 'Rating',
-            'reviews_table_review' => 'Review',
-            'reviews_table_management' => 'Management',
-            'reviews_create' => 'Create review',
-            'reviews_update' => 'Update review',
-            'reviews_form_user_id' => 'User ID',
-            'reviews_form_review_id' => 'Review ID',
-            'reviews_form_rating' => 'Rating',
-            'reviews_form_text' => 'Review text',
-            'reviews_create_btn' => 'Create',
-            'reviews_save_btn' => 'Save',
-            'reviews_cancel_btn' => 'Cancel',
+            'nav' => [
+                'users' => 'Users',
+                'reviews' => 'Reviews',
+                'documents' => 'PDF Documents',
+                'delivery' => 'Delivery',
+                'contacts' => 'Contacts',
+            ],
+            'settings' => [
+                'greeting' => $login !== '' ? "Hello, {$login}!" : 'Logged in as Guest',
+                'login_placeholder' => 'Your login',
+                'theme_light' => 'Light theme',
+                'theme_dark' => 'Dark theme',
+                'theme_colorblind' => 'Colorblind mode',
+                'apply' => 'Apply',
+            ],
+            'dialogs' => [
+                'cancel_edit' => 'Cancel editing?',
+                'save_changes' => 'Save changes?',
+                'create_user' => 'Create this user?',
+                'delete_user' => 'Delete this user?',
+                'create_review' => 'Create this review?',
+                'delete_review' => 'Delete this review?',
+            ],
+            'documents' => [
+                'title' => 'PDF Document Storage',
+                'upload_label' => 'Select a PDF file to upload to the server:',
+                'upload_button' => 'Upload PDF',
+                'table_id' => 'ID',
+                'table_name' => 'File Name',
+                'table_author' => 'Uploaded By',
+                'table_date' => 'Upload Date',
+                'table_action' => 'Action',
+                'download_button' => 'Open / Download PDF',
+                'no_files' => 'No PDF documents uploaded yet.',
+            ],
+            'users' => [
+                'management' => 'Users management',
+                'table_name' => 'Name',
+                'table_management' => 'Management',
+                'create' => 'Create user',
+                'update' => 'Update user',
+                'create_button' => 'Create',
+                'save_button' => 'Save',
+                'cancel_button' => 'Cancel',
+            ],
+            'reviews' => [
+                'management' => 'Reviews management',
+                'table_user_id' => 'User ID',
+                'table_name' => 'Name',
+                'table_rating' => 'Rating',
+                'table_review' => 'Review',
+                'table_management' => 'Management',
+                'create' => 'Create review',
+                'update' => 'Update review',
+                'form_user_id' => 'User ID',
+                'form_review_id' => 'Review ID',
+                'form_rating' => 'Rating',
+                'form_text' => 'Review text',
+                'create_button' => 'Create',
+                'save_button' => 'Save',
+                'cancel_button' => 'Cancel',
+            ],
             'delivery' => [
                 'title' => 'Delivery — Marketplace',
                 'heading' => 'Delivery terms',
@@ -230,6 +266,9 @@ function renderHeaderBar(?array $t = null, ?string $currentLogin = null, ?string
     $currentTheme = $currentTheme ?? $prefs['theme'];
     $currentLang  = $currentLang ?? $prefs['lang'];
 
+    $nav = $t['nav'];
+    $settings = $t['settings'];
+
     $loginEsc = htmlspecialchars($currentLogin, ENT_QUOTES, 'UTF-8');
     $selLight = $currentTheme === 'light' ? 'selected' : '';
     $selDark  = $currentTheme === 'dark' ? 'selected' : '';
@@ -247,27 +286,27 @@ function renderHeaderBar(?array $t = null, ?string $currentLogin = null, ?string
     return <<<HTML
     <div class="pref-bar">
         <nav class="pref-links">
-            <a href="/users.php"{$activeUsers}>{$t['nav_users']}</a>
-            <a href="/reviews.php"{$activeReviews}>{$t['nav_reviews']}</a>
-            <a href="/documents.php"{$activeDocuments}>{$t['nav_docs']}</a>
-            <a href="/delivery.php"{$activeDelivery}>{$t['nav_delivery']}</a>
-            <a href="/contacts.php"{$activeContacts}>{$t['nav_contacts']}</a>
+            <a href="/users.php"{$activeUsers}>{$nav['users']}</a>
+            <a href="/reviews.php"{$activeReviews}>{$nav['reviews']}</a>
+            <a href="/documents.php"{$activeDocuments}>{$nav['documents']}</a>
+            <a href="/delivery.php"{$activeDelivery}>{$nav['delivery']}</a>
+            <a href="/contacts.php"{$activeContacts}>{$nav['contacts']}</a>
         </nav>
 
         <form method="POST" class="pref-form">
             <input type="hidden" name="action" value="save_prefs">
-            <span>{$t['greeting']}</span>
-            <input type="text" name="user_login" value="{$loginEsc}" placeholder="{$t['login_ph']}">
+            <span>{$settings['greeting']}</span>
+            <input type="text" name="user_login" value="{$loginEsc}" placeholder="{$settings['login_placeholder']}">
             <select name="theme">
-                <option value="light" {$selLight}>{$t['theme_light']}</option>
-                <option value="dark" {$selDark}>{$t['theme_dark']}</option>
-                <option value="colorblind" {$selCb}>{$t['theme_cb']}</option>
+                <option value="light" {$selLight}>{$settings['theme_light']}</option>
+                <option value="dark" {$selDark}>{$settings['theme_dark']}</option>
+                <option value="colorblind" {$selCb}>{$settings['theme_colorblind']}</option>
             </select>
             <select name="lang">
                 <option value="ru" {$selRu}>RU</option>
                 <option value="en" {$selEn}>EN</option>
             </select>
-            <button type="submit">{$t['save_btn']}</button>
+            <button type="submit">{$settings['apply']}</button>
         </form>
     </div>
 HTML;

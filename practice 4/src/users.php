@@ -7,7 +7,8 @@ require_once __DIR__ . '/users_lib.php';
 $prefs = getUserPreferences();
 $currentLang = $prefs['lang'];
 
-$t = $prefs['t'];
+$content = $prefs['t']['users'];
+$dialogs = $prefs['t']['dialogs'];
 
 $api_url = 'http://localhost/api/users.php';
 
@@ -125,24 +126,13 @@ foreach ($users as $user) {
     <title>Пользователи</title>
 
     <link rel="stylesheet" href="/style.css">
-    <script>
-        function handleFormSubmit(e) {
-            const isCancel = e.submitter && e.submitter.classList.contains('cancel-button');
-
-            if (isCancel) {
-                return confirm('Отменить редактирование?');
-            }
-
-            const isEdit = <?= $edit_user ? 'true' : 'false' ?>;
-            return confirm(isEdit ? 'Сохранить изменения?' : 'Создать пользователя?');
-        }
-    </script>
+    <script src="/confirm.js" defer></script>
 </head>
 <body class="<?= themeClass($prefs['theme']) ?>">
     <div class="container">
         <?= renderHeaderBar() ?>
         <div class="card">
-            <h1><?= $t['users_management'] ?></h1>
+            <h1><?= $content['management'] ?></h1>
 
             <?php if ($code !== null): ?>
                 <?php $isError = ($code >= 400); ?>
@@ -157,9 +147,9 @@ foreach ($users as $user) {
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th><?= $t['users_table_name'] ?></th>
+                            <th><?= $content['table_name'] ?></th>
                             <th>Email</th>
-                            <th><?= $t['users_table_management'] ?></th>
+                            <th><?= $content['table_management'] ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -170,7 +160,7 @@ foreach ($users as $user) {
                                 <td><?= htmlspecialchars($u['email']) ?></td>
                                 <td>
                                     <div class="row-actions">
-                                        <form method="POST" action="users.php" onsubmit="return confirm('Удалить пользователя?')"
+                                        <form method="POST" action="users.php" data-confirm="<?= htmlspecialchars($dialogs['delete_user']) ?>"
                                             class="delete-form">
                                             <input type="hidden" name="action" value="delete">
                                             <input type="hidden" name="id" value="<?= htmlspecialchars((string)($u['id'] ?? '')) ?>" required>
@@ -190,12 +180,12 @@ foreach ($users as $user) {
         </div>
 
         <div class="card">
-            <h2><?= $edit_user ? $t['users_update'] : $t['users_create'] ?></h2>
+            <h2><?= $edit_user ? $content['update'] : $content['create'] ?></h2>
 
-            <form class="create-form" method="POST" action="users.php" onsubmit="return handleFormSubmit(event)">
+            <form class="create-form" method="POST" action="users.php" data-confirm="<?= htmlspecialchars($dialogs[$edit_user ? 'save_changes' : 'create_user']) ?>">
                 <div class="fields">
                     <div class="field">
-                        <label for="name"><?= $t['users_table_name'] ?></label>
+                        <label for="name"><?= $content['table_name'] ?></label>
                         <input type="text" name="name" id="name" value="<?= htmlspecialchars($edit_user['name'] ?? '') ?>">
                     </div>
                     <div class="field">
@@ -212,7 +202,7 @@ foreach ($users as $user) {
 
                 <div class="create-form-buttons">
                     <button type="submit">
-                        <?= $edit_user ? $t['users_save_btn'] : $t['users_create_btn'] ?>
+                        <?= $edit_user ? $content['save_button'] : $content['create_button'] ?>
                     </button>
 
                     <?php if ($edit_user): ?>
@@ -220,9 +210,10 @@ foreach ($users as $user) {
                                 formmethod="GET"
                                 formaction="users.php"
                                 class="cancel-button"
+                                data-confirm="<?= htmlspecialchars($dialogs['cancel_edit']) ?>"
                                 formnovalidate
                         >
-                            <?= $t['users_cancel_btn'] ?>
+                            <?= $content['cancel_button'] ?>
                         </button>
                     <?php endif; ?>
                 </div>

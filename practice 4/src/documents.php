@@ -6,7 +6,7 @@ $prefs        = getUserPreferences();
 $currentLogin = $prefs['login'];
 $currentTheme = $prefs['theme'];
 $currentLang  = $prefs['lang'];
-$t            = $prefs['t'];
+$content = $prefs['t']['documents'];
 
 $pdo = getDB();
 $uploadDir = __DIR__ . '/uploads/';
@@ -63,7 +63,7 @@ $files = $pdo->query('SELECT * FROM pdf_files ORDER BY id DESC')->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($t['docs_title']) ?></title>
+    <title><?= htmlspecialchars($content['title']) ?></title>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body class="<?= themeClass($prefs['theme']) ?>">
@@ -71,7 +71,7 @@ $files = $pdo->query('SELECT * FROM pdf_files ORDER BY id DESC')->fetchAll();
     <?= renderHeaderBar() ?>
 
     <div class="card">
-        <h1><?= htmlspecialchars($t['docs_title']) ?></h1>
+        <h1><?= htmlspecialchars($content['title']) ?></h1>
 
         <?php if ($statusMsg !== ''): ?>
             <div class="alert <?= $isError ? 'alert-err' : 'alert-ok' ?>">
@@ -80,25 +80,25 @@ $files = $pdo->query('SELECT * FROM pdf_files ORDER BY id DESC')->fetchAll();
         <?php endif; ?>
 
         <form method="POST" enctype="multipart/form-data" class="upload-form">
-            <label for="pdf-file"><?= htmlspecialchars($t['upload_label']) ?></label>
+            <label for="pdf-file"><?= htmlspecialchars($content['upload_label']) ?></label>
             <input id="pdf-file" type="file" name="pdf_file" accept="application/pdf" required>
-            <button type="submit"><?= htmlspecialchars($t['upload_btn']) ?></button>
+            <button type="submit"><?= htmlspecialchars($content['upload_button']) ?></button>
         </form>
     </div>
 
     <div class="card">
         <?php if (empty($files)): ?>
-            <p class="empty-state"><?= htmlspecialchars($t['no_files']) ?></p>
+            <p class="empty-state"><?= htmlspecialchars($content['no_files']) ?></p>
         <?php else: ?>
             <div class="table-scroll">
                 <table>
                     <thead>
                     <tr>
-                        <th><?= htmlspecialchars($t['table_id']) ?></th>
-                        <th><?= htmlspecialchars($t['table_name']) ?></th>
-                        <th><?= htmlspecialchars($t['table_author']) ?></th>
-                        <th><?= htmlspecialchars($t['table_date']) ?></th>
-                        <th><?= htmlspecialchars($t['table_action']) ?></th>
+                        <th><?= htmlspecialchars($content['table_id']) ?></th>
+                        <th><?= htmlspecialchars($content['table_name']) ?></th>
+                        <th><?= htmlspecialchars($content['table_author']) ?></th>
+                        <th><?= htmlspecialchars($content['table_date']) ?></th>
+                        <th><?= htmlspecialchars($content['table_action']) ?></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -110,7 +110,7 @@ $files = $pdo->query('SELECT * FROM pdf_files ORDER BY id DESC')->fetchAll();
                             <td><?= htmlspecialchars($f['uploaded_at']) ?></td>
                             <td>
                                 <a href="/download_pdf.php?id=<?= (int)$f['id'] ?>" target="_blank">
-                                    <?= htmlspecialchars($t['download_btn']) ?>
+                                    <?= htmlspecialchars($content['download_button']) ?>
                                 </a>
                             </td>
                         </tr>

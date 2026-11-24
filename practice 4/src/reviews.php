@@ -7,7 +7,8 @@ require_once __DIR__ . '/users_lib.php';
 $prefs = getUserPreferences();
 $currentLang = $prefs['lang'];
 
-$t = $prefs['t'];
+$content = $prefs['t']['reviews'];
+$dialogs = $prefs['t']['dialogs'];
 
 $api_url = 'http://localhost/api/reviews.php';
 
@@ -124,28 +125,17 @@ foreach ($reviews as $review) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $t['nav_reviews'] ?></title>
+    <title><?= $prefs['t']['nav']['reviews'] ?></title>
 
     <link rel="stylesheet" href="/style.css">
-    <script>
-        function handleFormSubmit(e) {
-            const isCancel = e.submitter && e.submitter.classList.contains('cancel-button');
-
-            if (isCancel) {
-                return confirm('Отменить редактирование?');
-            }
-
-            const isEdit = <?= $edit_review ? 'true' : 'false' ?>
-            return confirm(isEdit ? 'Сохранить изменения?' : 'Создать пользователя?');
-       }
-    </script>
+    <script src="/confirm.js" defer></script>
 </head>
 <body class="<?= themeClass($prefs['theme']) ?>">
 <div class="container">
     <?= renderHeaderBar() ?>
 
     <div class="card">
-        <h1><?= $t['reviews_management'] ?></h1>
+        <h1><?= $content['management'] ?></h1>
 
         <?php if ($code !== null): ?>
             <?php $isError = ($code >= 400); ?>
@@ -160,11 +150,11 @@ foreach ($reviews as $review) {
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th><?= $t['reviews_table_user_id'] ?></th>
-                    <th><?= $t['reviews_table_name'] ?></th>
-                    <th><?= $t['reviews_table_rating'] ?></th>
-                    <th><?= $t['reviews_table_review'] ?></th>
-                    <th><?= $t['reviews_table_management'] ?></th>
+                    <th><?= $content['table_user_id'] ?></th>
+                    <th><?= $content['table_name'] ?></th>
+                    <th><?= $content['table_rating'] ?></th>
+                    <th><?= $content['table_review'] ?></th>
+                    <th><?= $content['table_management'] ?></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -177,7 +167,7 @@ foreach ($reviews as $review) {
                         <td><?= htmlspecialchars($r['comment']) ?></td>
                         <td>
                             <div class="row-actions">
-                                <form method="POST" action="reviews.php" onsubmit="return confirm('Удалить отзыв?')"
+                                <form method="POST" action="reviews.php" data-confirm="<?= htmlspecialchars($dialogs['delete_review']) ?>"
                                       class="delete-form">
                                     <input type="hidden" name="action" value="delete">
                                     <input type="hidden" name="id" value="<?= htmlspecialchars((string)($r['id'] ?? '')) ?>" required>
@@ -197,22 +187,22 @@ foreach ($reviews as $review) {
     </div>
 
     <div class="card">
-        <h2><?= $edit_review ? $t['reviews_update'] : $t['reviews_create'] ?></h2>
+        <h2><?= $edit_review ? $content['update'] : $content['create'] ?></h2>
 
-        <form class="create-form" method="POST" action="reviews.php" onsubmit="return handleFormSubmit(event)">
+        <form class="create-form" method="POST" action="reviews.php" data-confirm="<?= htmlspecialchars($dialogs[$edit_review ? 'save_changes' : 'create_review']) ?>">
             <div class="fields review-fields">
                 <div class="field">
                     <?php if ($edit_review !== null): ?>
-                        <label for="id"><?= $t['reviews_form_review_id'] ?></label>
+                        <label for="id"><?= $content['form_review_id'] ?></label>
                         <input type="text" name="id" id="id" value="<?= htmlspecialchars($edit_review['id'] ?? '') ?>">
                     <?php else: ?>
-                        <label for="user_id"><?= $t['reviews_form_user_id'] ?></label>
+                        <label for="user_id"><?= $content['form_user_id'] ?></label>
                         <input type="text" name="user_id" id="user_id" value="<?= htmlspecialchars($edit_review['user_id'] ?? '') ?>">
                     <?php endif; ?>
                 </div>
 
                 <div class="field">
-                    <span><?= $t['reviews_form_rating'] ?></span>
+                    <span><?= $content['form_rating'] ?></span>
                     <div>
                         <input class="radio-item" type="radio" name="rating" id="ratingChoice1" value="1" <?= htmlspecialchars($edit_review ? ((int)$edit_review['rating'] === 1 ? 'checked' : '') : '') ?>>
                         <label for="ratingChoice1">1</label>
@@ -228,7 +218,7 @@ foreach ($reviews as $review) {
                 </div>
 
                 <div class="field">
-                    <label for="comment"><?= $t['reviews_form_text'] ?></label>
+                    <label for="comment"><?= $content['form_text'] ?></label>
                     <input type="text" name="comment" id="comment" value="<?= htmlspecialchars($edit_review['comment'] ?? '') ?>">
                 </div>
             </div>
@@ -241,7 +231,7 @@ foreach ($reviews as $review) {
 
             <div class="create-form-buttons">
                 <button type="submit">
-                    <?= $edit_review ? $t['reviews_save_btn'] : $t['reviews_create_btn'] ?>
+                    <?= $edit_review ? $content['save_button'] : $content['create_button'] ?>
                 </button>
 
                 <?php if ($edit_review): ?>
@@ -249,9 +239,10 @@ foreach ($reviews as $review) {
                             formmethod="GET"
                             formaction="reviews.php"
                             class="cancel-button"
+                            data-confirm="<?= htmlspecialchars($dialogs['cancel_edit']) ?>"
                             formnovalidate
                     >
-                        <?= $t['reviews_cancel_btn'] ?>
+                        <?= $content['cancel_button'] ?>
                     </button>
                 <?php endif; ?>
             </div>
